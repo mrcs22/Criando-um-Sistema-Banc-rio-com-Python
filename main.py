@@ -29,11 +29,29 @@ def deposit():
 
     print(f"Depósito de R${valueToDeposit: .2f} realizado com sucesso!")
 
+def show_statement():
+    print("Extrato bancário")
+    print(f"Saldo: R${balance: .2f}")
+    print("Operações realizadas:")
+
+    if(len(operations) == 0):
+        print("Nenhuma operação realizada!")
+        return
+    
+    for operation in operations:
+        print('-' * 30)
+        print(f"""    
+        Tipo: {operation['type']}
+        Valor: R${operation['value']: .2f}
+        data: {operation['timestamp'].strftime('%d/%m/%Y')}
+        hora: {operation['timestamp'].strftime('%H:%M:%S')}
+        """)
+
 MENU = """
 
 [d] - Depositar
-[s] - Sacar
 [e] - Extrato
+[s] - Sacar
 [s] - Sair
 
 """
@@ -44,9 +62,12 @@ def main():
         option = input("Escolha uma opção: ")
 
         if option == 'd':
-            deposit()       
+            deposit()      
+        elif option == 'e':
+            show_statement() 
         elif option == 's':
             print("Saindo...")
+            break
         else:
             print("Opção inválida!")
 
