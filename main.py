@@ -8,6 +8,7 @@ operations = []
 
 OPERATIONS = {
     'deposit': 'depósito',
+    'withdraw': 'saque'
 }
 
 def deposit():
@@ -25,10 +26,13 @@ def deposit():
         return
     
     balance += valueToDeposit
+
+    currentDate = datetime.datetime.now()
     operations.append({
         'type': OPERATIONS['deposit'],
-        'value': valueToDeposit,
-        'timestamp': datetime.datetime.now()
+        'value': valueToDeposit, 
+        'date': currentDate.strftime('%d/%m/%Y'),
+        'time': currentDate.strftime('%H:%M:%S')
     })
 
     print(f"Depósito de R${valueToDeposit: .2f} realizado com sucesso!")
@@ -47,16 +51,60 @@ def show_statement():
         print(f"""    
         Tipo: {operation['type']}
         Valor: R${operation['value']: .2f}
-        data: {operation['timestamp'].strftime('%d/%m/%Y')}
-        hora: {operation['timestamp'].strftime('%H:%M:%S')}
+        Data: {operation['date']}
+        Hora: {operation['time']}
         """)
+
+def withdraw():
+    global balance
+    global operations
+
+    withdraws_today = 0
+    currentDate = datetime.datetime.now().strftime('%d/%m/%Y')
+   
+    for operation in operations:
+        if operation['type'] == OPERATIONS['withdraw'] and operation['date'] == currentDate:
+            withdraws_today += 1
+            
+    if  withdraws_today >= DAILY_WITDRAWS_LIMIT:
+        print("Limite diário de saques atingido!")
+        return
+
+    valueToWithdraw = 0
+    try:
+        valueToWithdraw = float(input("Digite o valor do saque: ").replace(',', '.'))
+    except:
+        print("Valor inválido!")
+        return
+
+    if valueToWithdraw <= 0:
+        print("Valor inválido!")
+        return
+    
+    if valueToWithdraw > WITDRAW_MONEY_LIMIT:
+        print(f"Valor máximo para saque é de R${WITDRAW_MONEY_LIMIT: .2f}")
+        return
+
+    if valueToWithdraw > balance:
+        print("Saldo insuficiente!")
+        return
+
+    balance -= valueToWithdraw
+    operations.append({
+        'type': OPERATIONS['withdraw'],
+        'value': valueToWithdraw,
+        'date': currentDate,
+        'time': datetime.datetime.now().strftime('%H:%M:%S')
+    })
+
+    print(f"Saque de R${valueToWithdraw: .2f} realizado com sucesso!")
 
 MENU = """
 
 [d] - Depositar
 [e] - Extrato
 [s] - Sacar
-[s] - Sair
+[q] - Sair
 
 """
 
@@ -70,6 +118,8 @@ def main():
         elif option == 'e':
             show_statement() 
         elif option == 's':
+            withdraw()
+        elif option == 'q':
             print("Saindo...")
             break
         else:
