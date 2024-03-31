@@ -6,6 +6,10 @@ WITDRAW_MONEY_LIMIT = 500
 balance = 0
 operations = []
 
+OPERATIONS = {
+    'deposit': 'depósito',
+}
+
 def deposit():
     global balance
     valueToDeposit = 0
@@ -22,7 +26,7 @@ def deposit():
     
     balance += valueToDeposit
     operations.append({
-        'type': 'deposit',
+        'type': OPERATIONS['deposit'],
         'value': valueToDeposit,
         'timestamp': datetime.datetime.now()
     })
