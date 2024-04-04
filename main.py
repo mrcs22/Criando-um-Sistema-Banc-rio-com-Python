@@ -99,16 +99,56 @@ def withdraw():
 
     print(f"Saque de R${valueToWithdraw: .2f} realizado com sucesso!")
 
+def register_user(users):
+    user = {
+        'name': '',
+        'cpf': '',
+        'birth_date': '',
+        'address': {
+            'street': '',
+            'number': '',
+            'complement': '',
+            'city': '',
+            'state': ''
+        }
+    }
+    
+    cpf = input("Digite o CPF do usuário: ")
+    only_numbers_cpf = ''.join(filter(str.isdigit, cpf))
+    user['cpf'] = only_numbers_cpf
+
+    conflicting_cpf_user = next((u for u in users if u['cpf'] == user['cpf']), None)
+    if conflicting_cpf_user:
+        print("CPF já cadastrado!")
+        return
+    
+    user['name'] = input("Digite o nome do usuário: ")
+    user['birth_date'] = input("Digite a data de nascimento do usuário: ")
+    user['address']['street'] = input("Digite a rua do usuário: ")
+    user['address']['number'] = input("Digite o número do usuário: ")
+    user['address']['complement'] = input("Digite o complemento do usuário: ")
+    user['address']['city'] = input("Digite a cidade do usuário: ")
+    user['address']['state'] = input("Digite o estado do usuário: ")
+    
+    users.append(user)
+    print("Usuário cadastrado com sucesso!")
+
 MENU = """
 
 [d] - Depositar
 [e] - Extrato
 [s] - Sacar
+[c] - Cadastrar usuário
+[l] - Listar usuários
+[a] - Adicionar conta
 [q] - Sair
 
 """
 
 def main():
+    users = []
+    accounts = []
+
     while(True):
         print(MENU)
         option = input("Escolha uma opção: ")
@@ -119,6 +159,8 @@ def main():
             show_statement() 
         elif option == 's':
             withdraw()
+        elif option == 'c':
+            register_user(users)
         elif option == 'q':
             print("Saindo...")
             break
