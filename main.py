@@ -147,6 +147,28 @@ def list_users(users):
         Endereço: {user['address']['street']} - {user['address']['number']} - {user['address']['neghborhood']} - {user['address']['city']} / {user['address']['state']}
         """)
 
+def create_account(accounts, users):
+    account = {
+        'user': None,
+        'number': '',
+        'agency': '0001',
+        'balance': 0
+    }
+
+    cpf = input("Digite o CPF do usuário: ")
+    only_numbers_cpf = ''.join(filter(str.isdigit, cpf))
+
+    user = next((u for u in users if u['cpf'] == only_numbers_cpf), None)
+    if not user:
+        print("Usuário não encontrado!")
+        return
+    
+    account['user'] = user
+    account['number'] = str(len(accounts) + 1).zfill(4)
+    accounts.append(account)
+
+    print("Conta criada com sucesso!")
+
 MENU = """
 
 [d] - Depositar
@@ -177,6 +199,8 @@ def main():
             register_user(users)
         elif option == 'l':
             list_users(users)
+        elif option == 'a':
+            create_account(accounts, users)
         elif option == 'q':
             print("Saindo...")
             break
