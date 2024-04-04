@@ -169,6 +169,29 @@ def create_account(accounts, users):
 
     print("Conta criada com sucesso!")
 
+def list_accounts(users, accounts):
+    cpf = input("Digite o CPF do usuário: ")
+    only_numbers_cpf = ''.join(filter(str.isdigit, cpf))
+
+    user = next((u for u in users if u['cpf'] == only_numbers_cpf), None)
+    if not user:
+        print("Usuário não encontrado!")
+        return
+    
+    user_accounts = [a for a in accounts if a['user'] == user]
+    if len(user_accounts) == 0:
+        print("Nenhuma conta encontrada!")
+        return
+    
+    for account in user_accounts:
+        print('-' * 30)
+        print(f"""
+        Usuário: {account['user']['name']}
+        Número da conta: {account['number']}
+        Agência: {account['agency']}
+        Saldo: R${account['balance']: .2f}
+        """)
+
 MENU = """
 
 [d] - Depositar
@@ -177,6 +200,7 @@ MENU = """
 [c] - Cadastrar usuário
 [l] - Listar usuários
 [a] - Adicionar conta
+[lc] - Listar contas
 [q] - Sair
 
 """
@@ -201,6 +225,8 @@ def main():
             list_users(users)
         elif option == 'a':
             create_account(accounts, users)
+        elif option == 'lc':
+            list_accounts(users, accounts)
         elif option == 'q':
             print("Saindo...")
             break
