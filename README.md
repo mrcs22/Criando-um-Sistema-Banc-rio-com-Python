@@ -11,9 +11,16 @@ Python 3.x
 - Deposit money into your account.
 - Withdraw money from your account (limited by daily withdrawal limit and maximum withdrawal amount).
 - View transaction history and current balance.
+- Register a new user.
+- List all users.
+- Register a new account.
+- List all accounts of a user. 
+
 ## Configuration
 You can configure the following parameters in the script:
 
 - DAILY_WITHDRAWS_LIMIT: Maximum number of withdrawals allowed per day.
 - WITHDRAW_MONEY_LIMIT: Maximum amount that can be withdrawn in a single transaction.
 - OPERATIONS: Mapping of operation types to their display names.
+
+
