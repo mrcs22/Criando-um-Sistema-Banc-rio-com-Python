@@ -107,7 +107,7 @@ def register_user(users):
         'address': {
             'street': '',
             'number': '',
-            'complement': '',
+            'neghborhood': '',
             'city': '',
             'state': ''
         }
@@ -126,12 +126,26 @@ def register_user(users):
     user['birth_date'] = input("Digite a data de nascimento do usuário: ")
     user['address']['street'] = input("Digite a rua do usuário: ")
     user['address']['number'] = input("Digite o número do usuário: ")
-    user['address']['complement'] = input("Digite o complemento do usuário: ")
+    user['address']['neghborhood'] = input("Digite o bairro do usuário: ")
     user['address']['city'] = input("Digite a cidade do usuário: ")
     user['address']['state'] = input("Digite o estado do usuário: ")
     
     users.append(user)
     print("Usuário cadastrado com sucesso!")
+
+def list_users(users):
+    if len(users) == 0:
+        print("Nenhum usuário cadastrado!")
+        return
+    
+    for user in users:
+        print('-' * 30)
+        print(f"""
+        Nome: {user['name']}
+        CPF: {user['cpf']}
+        Data de nascimento: {user['birth_date']}
+        Endereço: {user['address']['street']} - {user['address']['number']} - {user['address']['neghborhood']} - {user['address']['city']} / {user['address']['state']}
+        """)
 
 MENU = """
 
@@ -161,6 +175,8 @@ def main():
             withdraw()
         elif option == 'c':
             register_user(users)
+        elif option == 'l':
+            list_users(users)
         elif option == 'q':
             print("Saindo...")
             break
